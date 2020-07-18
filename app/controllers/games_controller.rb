@@ -2,28 +2,21 @@ class GamesController < ApplicationController
 
     def index
         games = Game.all
-        render json: { games: games}
+        render json: {
+            lobby_status:{
+                games: games,
+                connections: GamesChannel.connection_count + 1
+        } 
+    }
     end
 
     def create
-
-       
-
-
 
         game = Game.new(game_params)
         game.save
 
         GamesController.broadcast_lobby_status
-        # if game.save
-        #     serialized_data = ActiveModelSerializers::Adapter::Json.new(
-        #         GameSerializer.new(game)
-        #     ).serializable_hash
-        #     ActionCable.server.broadcast 'games_channel', serialized_data
-        #     head :ok
-        # end
 
-    
     end
 
     def self.broadcast_lobby_status
@@ -55,7 +48,6 @@ class GamesController < ApplicationController
         game.destroy
 
         GamesController.broadcast_lobby_status
-
     
     end
 
