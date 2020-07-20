@@ -1,10 +1,20 @@
 class GamesController < ApplicationController
 
     def index
-        games = Game.all
+
+        allGames = Game.all.map{
+            |game|
+            {
+                name: game.name,
+                id: game.id,
+                created_at: game.created_at,
+                # connection_count: MessagesChannel.game_connection_count(game.id),
+                connection_count: game.connections
+            }
+        }
         render json: {
             lobby_status:{
-                games: games,
+                games: allGames,
                 connections: GamesChannel.connection_count + 1
         } 
     }
@@ -27,7 +37,8 @@ class GamesController < ApplicationController
             {
                 name: game.name,
                 id: game.id,
-                created_at: game.created_at
+                created_at: game.created_at,
+                connection_count: game.connections,
             }
         }
     
