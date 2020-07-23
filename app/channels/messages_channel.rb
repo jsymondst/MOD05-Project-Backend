@@ -5,14 +5,14 @@ class MessagesChannel < ApplicationCable::Channel
 
   def subscribed
     # stream_from "some_channel"
-    game = Game.find_by(id: params[:game_id])
-    stream_for game
+    @game = Game.find_by(id: params[:game_id])
+    stream_for @game
 
-    game.increment!(:connections)
+    @game.increment!(:connections)
 
 
 
-    @@game_connections["game#{game.id}"] += 1
+    @@game_connections["game#{@game.id}"] += 1
 
   end
 
@@ -21,8 +21,8 @@ class MessagesChannel < ApplicationCable::Channel
 
     @@game_connections["game#{params["game_id"]}"] -= 1
 
-    game = Game.find_by(id: params[:game_id])
-    game.decrement!(:connections)
+    @game = Game.find_by(id: params[:game_id])
+    @game.decrement!(:connections)
 
   end
 

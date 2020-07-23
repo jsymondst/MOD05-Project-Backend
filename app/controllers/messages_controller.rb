@@ -11,9 +11,6 @@ class MessagesController < ApplicationController
             puts "message not created"
         end
 
-
-
-
     end
 
     private

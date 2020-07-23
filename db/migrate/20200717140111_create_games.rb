@@ -3,6 +3,7 @@ class CreateGames < ActiveRecord::Migration[6.0]
     create_table :games do |t|
       t.string :name
       t.integer :connections, default: 0
+      t.string :game_type
 
       t.timestamps
     end
