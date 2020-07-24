@@ -25,6 +25,7 @@ class TurnsController < ApplicationController
 
     # end
 
+
     def create 
         
         turn = Turn.create(new_turn_params)
@@ -32,8 +33,13 @@ class TurnsController < ApplicationController
         if turn.save
             turn_hash = TurnSerializer.new(turn).serializable_hash
             ActionCable.server.broadcast "turn_channel_#{turn.game_id}", {turn: turn_hash}
+
+            if turn.message
+                MessagesChannel.broadcast_to game, {text: turn.message}
+            end
+
         else
-            puts "message not created"
+            puts "turn not created"
         end
 
     end
@@ -51,7 +57,7 @@ class TurnsController < ApplicationController
 
 
     def new_turn_params
-        params.require(:turn).permit(:game_id, :action, :turn_number, :game_type, )
+        params.require(:turn).permit(:game_id, :action, :turn_number, :game_type, :message)
     end
 
 end

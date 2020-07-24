@@ -8,8 +8,8 @@ class GamesController < ApplicationController
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
-                # connection_count: MessagesChannel.game_connection_count(game.id),
-                connection_count: game.connections
+                connection_count: MessagesChannel.game_connection_count(game.id),
+                # connection_count: game.connections
             }
         }
         render json: {
@@ -31,14 +31,13 @@ class GamesController < ApplicationController
 
     def self.broadcast_lobby_status
 
-
         allGames = Game.all.map{
             |game|
             {
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
-                connection_count: game.connections,
+                connection_count: MessagesChannel.game_connection_count(game.id)
             }
         }
     
@@ -61,6 +60,31 @@ class GamesController < ApplicationController
         GamesController.broadcast_lobby_status
     
     end
+
+    def show
+        game = Game.find_by(id: params[:id])
+
+        if game
+            turn_hash ={
+                game_id: game.id,
+                game_type: "game_status",
+                action: {
+                    connections: MessagesChannel.game_connection_count(game.id),
+                    name: game.name,    
+                                    }
+            }
+
+            ActionCable.server.broadcast "turn_channel_#{game.id}", {turn: turn_hash}
+
+        else
+            render status: :not_found
+        end
+
+
+
+
+    end
+
 
     
 
