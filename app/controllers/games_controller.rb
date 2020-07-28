@@ -8,6 +8,7 @@ class GamesController < ApplicationController
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
+                game_type: game.game_type,
                 connection_count: MessagesChannel.game_connection_count(game.id),
                 # connection_count: game.connections
             }
@@ -37,6 +38,7 @@ class GamesController < ApplicationController
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
+                game_type: game.game_type,
                 connection_count: MessagesChannel.game_connection_count(game.id)
             }
         }
@@ -91,7 +93,7 @@ class GamesController < ApplicationController
     private
 
     def game_params
-        params.require(:game).permit(:name)
+        params.require(:game).permit(:name, :game_type)
     end
 
 end
