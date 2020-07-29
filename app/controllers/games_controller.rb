@@ -2,13 +2,14 @@ class GamesController < ApplicationController
 
     def index
 
-        allGames = Game.all.map{
+        allGames = Game.visible_games.map{
             |game|
             {
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
                 game_type: game.game_type,
+                closed: game.closed,
                 connection_count: MessagesChannel.game_connection_count(game.id),
                 # connection_count: game.connections
             }
@@ -32,13 +33,14 @@ class GamesController < ApplicationController
 
     def self.broadcast_lobby_status
 
-        allGames = Game.all.map{
+        allGames = Game.visible_games.map{
             |game|
             {
                 name: game.name,
                 id: game.id,
                 created_at: game.created_at,
                 game_type: game.game_type,
+                closed: game.closed,
                 connection_count: MessagesChannel.game_connection_count(game.id)
             }
         }
@@ -72,6 +74,7 @@ class GamesController < ApplicationController
                 game_type: "game_status",
                 action: {
                     connections: MessagesChannel.game_connection_count(game.id),
+                    closed: game.closed,
                     name: game.name,    
                                     }
             }
@@ -80,6 +83,34 @@ class GamesController < ApplicationController
 
         else
             render status: :not_found
+        end
+
+    end
+
+    def close
+        @game = Game.find_by(id:params[:id])
+
+        new_closed_state = !@game.closed
+
+
+        if @game
+            @game.closed = !@game.closed
+            @game.save
+            turn_hash ={
+                game_id: @game.id,
+                game_type: "game_status",
+                action: {
+                    connections: MessagesChannel.game_connection_count(@game.id),
+                    closed: @game.closed,
+                    name: @game.name,    
+                                    }
+            }
+            ActionCable.server.broadcast "turn_channel_#{@game.id}", {turn: turn_hash}
+
+            GamesController.broadcast_lobby_status
+
+
+
         end
 
 

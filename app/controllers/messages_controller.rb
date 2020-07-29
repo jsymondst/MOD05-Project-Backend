@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
     private
 
     def new_message_params
-        params.require(:message).permit([:game_id, [:text]])
+        params.require(:message).permit(:game_id, :text, :message_type, :username)
     end
 
 end

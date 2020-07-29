@@ -3,7 +3,10 @@ class GamesChannel < ApplicationCable::Channel
   def subscribed
     # stream_from "some_channel"
     stream_from "games_channel"
+
     @@connection_count += 1
+
+    GamesController.broadcast_lobby_status
     
   end
 
