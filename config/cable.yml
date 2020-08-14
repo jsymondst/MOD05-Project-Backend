@@ -6,5 +6,6 @@ test:
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+#   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  url: redis://redistogo:733a707c5c121d04cb6b9c6238a7db26@soapfish.redistogo.com:10462/
 #   channel_prefix: ugp_backend_production
