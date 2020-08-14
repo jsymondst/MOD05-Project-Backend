@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   resources :tictactoeturns, only: [:create]
   mount ActionCable.server => '/cable'
 
+  post "/games/close/:id", to: 'games#close'
+
 end

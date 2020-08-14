@@ -8,11 +8,11 @@ class MessagesChannel < ApplicationCable::Channel
     @game = Game.find_by(id: params[:game_id])
     stream_for @game
 
-    @game.increment!(:connections)
-
-
-
     @@game_connections["game#{@game.id}"] += 1
+
+    if params["game_id"] != 1
+      GamesController.broadcast_lobby_status
+    end
 
   end
 
@@ -21,8 +21,20 @@ class MessagesChannel < ApplicationCable::Channel
 
     @@game_connections["game#{params["game_id"]}"] -= 1
 
-    @game = Game.find_by(id: params[:game_id])
-    @game.decrement!(:connections)
+    
+    if params["game_id"] != 1
+      if @@game_connections["game#{params["game_id"]}"] == 0
+        @game = Game.find_by(id: params["game_id"])
+        # @game.hidden = true;
+        @game.closed = false;
+        @game.save
+      end
+      GamesController.broadcast_lobby_status
+    end
+
+
+    # @game = Game.find_by(id: params[:game_id])
+    # @game.decrement!(:connections)
 
   end
 

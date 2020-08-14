@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+Game.create(name: "LobbyChat", hidden: true, game_type:"lobby" )
+
+puts "Created LobbyChat"

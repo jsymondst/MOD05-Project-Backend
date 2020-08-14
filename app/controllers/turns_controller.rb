@@ -35,7 +35,7 @@ class TurnsController < ApplicationController
             ActionCable.server.broadcast "turn_channel_#{turn.game_id}", {turn: turn_hash}
 
             if turn.message
-                MessagesChannel.broadcast_to game, {text: turn.message}
+                MessagesChannel.broadcast_to game, {text: turn.message, username:"system", type:"turn"}
             end
 
         else

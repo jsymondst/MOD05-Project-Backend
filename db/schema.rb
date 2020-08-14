@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_125655) do
+ActiveRecord::Schema.define(version: 2020_07_29_100315) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2020_07_24_125655) do
     t.string "game_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "closed", default: false
+    t.boolean "hidden", default: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -25,6 +27,8 @@ ActiveRecord::Schema.define(version: 2020_07_24_125655) do
     t.integer "game_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "message_type"
+    t.string "username"
     t.index ["game_id"], name: "index_messages_on_game_id"
   end
 
