@@ -18,4 +18,4 @@ The app has 3 models:
 
 ## Connections
 
-The app uses Rails' Actioncable for websocket connections. This allows real-time updates of the lobby, gmae turns and chat, and through the subscribe / unsubscribe methods the server can keep track of how many clients are connected to the main server or to individual games.
+The app uses Rails' Actioncable for websocket connections. This allows real-time updates of the lobby, game turns and chat, and through the subscribe / unsubscribe methods the server can keep track of how many clients are connected to the main server or to individual games.
