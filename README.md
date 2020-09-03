@@ -1,24 +1,21 @@
-# README
+This is the Rails Back end for my online games platform, [Black Horse Games](https://black-horse-games.netlify.app/)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Concept
 
-Things you may want to cover:
+Black Horse Games is a multiplayer games platform where users can play games with friends over the web. It has in-game and lobby chat and 2 different game types (tic-tac-toe and connect four). It's responsively styled to display well on desktops, mobiles and tablets.
 
-* Ruby version
+[Demo link](https://www.youtube.com/watch?v=RVxXg_gi2ts&feature=youtu.be)
 
-* System dependencies
+[React Front End Link](https://github.com/jsymondst/MOD05-Project-Frontend)
 
-* Configuration
+## Overall Structure
 
-* Database creation
+The app has 3 models:
 
-* Database initialization
+-   Games, which handle the game listings
+-   Messages, which are linked to a game and are used for chat
+-   Turns, which are linked to games and are used to communicate game actions between clients.
 
-* How to run the test suite
+## Connections
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The app uses Rails' Actioncable for websocket connections. This allows real-time updates of the lobby, gmae turns and chat, and through the subscribe / unsubscribe methods the server can keep track of how many clients are connected to the main server or to individual games.
